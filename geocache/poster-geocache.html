@@ -1,0 +1,61 @@
+<html>
+	<head>
+
+	<style>
+
+	form
+	{
+		border:dotted #333333 2px;
+		width:400px;
+		padding:10px;
+	}
+
+	form > div
+	{
+		border:solid 1px #333333;
+		border-radius:10px;
+		padding:5px;margin:5px;
+		background-color:#eeeeee;
+	}
+
+	label
+	{
+		display:block;
+	}
+
+	input[type=submit]
+	{
+		width:100%;
+	}
+
+	</style>
+
+	</head>
+	<body>
+
+	<h1>Formulaire de test</h1>
+	<h2>Ajouter un geocache</h2>
+
+<form
+  action="http://172.105.26.73:3000/geocache/ajouter"
+  method="post">
+        <div>
+        <label for="nom"> Nom </label>
+        <input type="text" name="nom" id= "nom"/>
+        </div>
+        <div>
+        <label for="proprietaire"> Propriétaire </label>
+        <input type="text" name="proprietaire" id= "proprietaire"/>
+        </div>
+        <div>
+        <label for="longitude"> longitude </label>
+        <input type="text" name="longitude" id= "longitude"/>
+        </div>
+        <div>
+        <label for="latitude"> latitude </label>
+        <input type="text" name="latitude" id= "latitude"/>
+        </div>
+        <input type="submit" value="Envoyer"/>
+        </form>
+	</body>
+</html>
