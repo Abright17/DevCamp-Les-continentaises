@@ -1,0 +1,27 @@
+<form
+  action="http://139.177.194.89:3000/geocache/ajouter"
+  method="post"
+>
+  <div>
+    <label for="nom">Nom de la geocache</label>
+    <input type="text" name="nom" id="nom" required />
+  </div>
+
+  <div>
+    <label for="proprietaire">Propriétaire</label>
+    <input type="text" name="proprietaire" id="proprietaire" required />
+  </div>
+
+  <div>
+    <label for="latitude">Latitude</label>
+    <input type="number" name="latitude" id="latitude" step="any" required />
+  </div>
+
+  <div>
+    <label for="longitude">Longitude</label>
+    <input type="number" name="longitude" id="longitude" step="any" required />
+  </div>
+
+  <input type="submit" value="Ajouter la geocache" />
+</form>
+
