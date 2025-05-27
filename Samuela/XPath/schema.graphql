@@ -1,0 +1,11 @@
+type Geocache {
+  id: ID
+  nom: String
+  description: String
+  difficulté: Float
+}
+
+type Query {
+  geocaches(descriptionRegex: String): [Geocache]
+}
+
