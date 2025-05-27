@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <title>Service des Geocaches</title>
+</head>
+<body>
+
+  <h1>Liste des Geocaches</h1>
+  <div id="geocaches"></div>
+  <button id="btn-liste">Afficher toutes les geocaches</button>
+
+  <h2>Ajouter une geocache</h2>
+  <form id="form-ajouter">
+    <input name="nom" placeholder="Nom" required>
+    <input name="latitude" placeholder="Latitude" type="number" step="any" required>
+    <input name="longitude" placeholder="Longitude" type="number" step="any" required>
+    <button type="submit">Ajouter</button>
+  </form>
+
+  <h2>Modifier une geocache</h2>
+  <form id="form-editer">
+    <input name="id" placeholder="ID" type="number" required>
+    <input name="nom" placeholder="Nouveau nom">
+    <input name="latitude" placeholder="Nouvelle latitude" type="number" step="any">
+    <input name="longitude" placeholder="Nouvelle longitude" type="number" step="any">
+    <button type="submit">Modifier</button>
+  </form>
+
+  <h2>Supprimer une geocache</h2>
+  <form id="form-effacer">
+    <input name="id" placeholder="ID du geocache à supprimer" type="number" required>
+    <button type="submit">Supprimer</button>
+  </form>
+
+  <h2>Obtenir une geocache par ID</h2>
+  <form id="form-get">
+    <input name="id" placeholder="ID" type="number" required>
+    <button type="submit">Obtenir</button>
+  </form>
+  <pre id="result-get"></pre>
+
+  <script>
+    const baseURL = 'http://localhost:3000/geocache';
+    const geocachesDiv = document.getElementById('geocaches');
+    const resultGet = document.getElementById('result-get');
+
+    // Afficher toutes les geocaches
+    document.getElementById('btn-liste').addEventListener('click', () => {
+      fetch(baseURL + '/liste')
+        .then(r => r.json())
+        .then(data => {
+          geocachesDiv.innerHTML = '';
+          data.forEach(g => {
+            const div = document.createElement('div');
+            div.textContent = `ID: ${g.id} | Nom: ${g.nom} | Latitude: ${g.latitude} | Longitude: ${g.longitude}`;
+            geocachesDiv.appendChild(div);
+          });
+        });
+    });
+
+    // Ajouter une geocache
+    document.getElementById('form-ajouter').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const data = {
+        nom: form.nom.value,
+        latitude: parseFloat(form.latitude.value),
+        longitude: parseFloat(form.longitude.value)
+      };
+      fetch(baseURL + '/ajouter', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      })
+      .then(r => r.json())
+      .then(data => {
+        alert('Geocache ajoutée avec ID ' + data.id);
+        form.reset();
+      })
+      .catch(err => alert('Erreur : ' + err));
+    });
+
+    // Modifier une geocache
+    document.getElementById('form-editer').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.id.value;
+      const data = {};
+      if(form.nom.value) data.nom = form.nom.value;
+      if(form.latitude.value) data.latitude = parseFloat(form.latitude.value);
+      if(form.longitude.value) data.longitude = parseFloat(form.longitude.value);
+
+      fetch(baseURL + '/editer/' + id, {
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(data)
+      })
+      .then(r => {
+        if (!r.ok) throw new Error('Geocache non trouvée');
+        return r.json();
+      })
+      .then(data => {
+        alert('Geocache modifiée: ' + JSON.stringify(data));
+        form.reset();
+      })
+      .catch(err => alert('Erreur : ' + err));
+    });
+
+    // Supprimer une geocache
+    document.getElementById('form-effacer').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.id.value;
+
+      if(!confirm(`Confirmer suppression de la geocache ${id} ?`)) return;
+
+      fetch(baseURL + '/effacer/' + id, {
+        method: 'DELETE',
+      })
+      .then(r => {
+        if (!r.ok) throw new Error('Geocache non trouvée');
+        return r.json();
+      })
+      .then(data => {
+        alert('Geocache supprimée : ' + JSON.stringify(data));
+        form.reset();
+      })
+      .catch(err => alert('Erreur : ' + err));
+    });
+
+    // Obtenir une geocache par ID
+    document.getElementById('form-get').addEventListener('submit', e => {
+      e.preventDefault();
+      const form = e.target;
+      const id = form.id.value;
+
+      fetch(baseURL + '/' + id)
+        .then(r => {
+          if(!r.ok) throw new Error('Geocache non trouvée');
+          return r.json();
+        })
+        .then(data => {
+          resultGet.textContent = JSON.stringify(data, null, 2);
+        })
+        .catch(err => resultGet.textContent = 'Erreur : ' + err);
+    });
+  </script>
+
+</body>
+</html>
