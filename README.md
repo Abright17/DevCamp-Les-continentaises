@@ -1,3 +1,9 @@
+NGOUEKAMG TALLA
+MOUSSANGO SAMUELLA
+YEPSEU KOWA
+
+
+
 ## Présentations Samuela
 
 - [Présentation 1](https://docs.google.com/presentation/d/1XZbQ3pwkaGrJDj6mGc5J-agJrchqimRCyu11-PTvg5s/edit?usp=drive_link)
